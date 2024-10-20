@@ -1,0 +1,124 @@
+import org.junit.jupiter.api.Test;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CustomPojoTest {
+
+    @Test
+    public void testAllGettersAndSetters() throws Exception {
+        // List all model classes
+        Class<?>[] modelClasses = {
+            JenkinsConfig.class,
+            AnotherModel.class,
+            YetAnotherModel.class
+            // Add more classes here
+        };
+
+        for (Class<?> modelClass : modelClasses) {
+            Object instance = modelClass.getDeclaredConstructor().newInstance();
+
+            for (Method method : modelClass.getDeclaredMethods()) {
+                if (method.getName().startsWith("get")) {
+                    // Call the getter and assert that it does not throw an exception
+                    assertDoesNotThrow(() -> method.invoke(instance));
+                } else if (method.getName().startsWith("set")) {
+                    // Find the corresponding getter
+                    String getterName = "get" + method.getName().substring(3);
+                    Method getter = modelClass.getDeclaredMethod(getterName);
+
+                    // Set a test value based on the parameter type
+                    Class<?> paramType = method.getParameterTypes()[0];
+                    Object testValue = getTestValue(paramType);
+
+                    // Call the setter and then check if the getter returns the same value
+                    method.invoke(instance, testValue);
+                    assertEquals(testValue, getter.invoke(instance));
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testEqualsAndHashCode() throws Exception {
+        Class<?>[] modelClasses = {
+            JenkinsConfig.class,
+            AnotherModel.class,
+            YetAnotherModel.class
+            // Add more classes here
+        };
+
+        for (Class<?> modelClass : modelClasses) {
+            Object instance1 = modelClass.getDeclaredConstructor().newInstance();
+            Object instance2 = modelClass.getDeclaredConstructor().newInstance();
+
+            // Assert that two new instances are equal and have the same hash code
+            assertEquals(instance1, instance2);
+            assertEquals(instance1.hashCode(), instance2.hashCode());
+        }
+    }
+
+    @Test
+    public void testToString() throws Exception {
+        Class<?>[] modelClasses = {
+            JenkinsConfig.class,
+            AnotherModel.class,
+            YetAnotherModel.class
+            // Add more classes here
+        };
+
+        for (Class<?> modelClass : modelClasses) {
+            Object instance = modelClass.getDeclaredConstructor().newInstance();
+
+            // Check if toString contains class name
+            String toStringOutput = instance.toString();
+            assertTrue(toStringOutput.contains(modelClass.getSimpleName()));
+        }
+    }
+
+    @Test
+    public void testAllArgsConstructor() throws Exception {
+        Class<?>[] modelClasses = {
+            JenkinsConfig.class,
+            AnotherModel.class,
+            YetAnotherModel.class
+            // Add more classes here
+        };
+
+        for (Class<?> modelClass : modelClasses) {
+            // Get all constructors and find the all-args constructor
+            for (Constructor<?> constructor : modelClass.getConstructors()) {
+                if (constructor.getParameterCount() > 0) {
+                    // Create test values for all parameters
+                    Object[] testValues = new Object[constructor.getParameterCount()];
+                    for (int i = 0; i < constructor.getParameterCount(); i++) {
+                        testValues[i] = getTestValue(constructor.getParameterTypes()[i]);
+                    }
+
+                    // Instantiate using the all-args constructor
+                    Object instance = constructor.newInstance(testValues);
+
+                    // Verify that the instance was created successfully
+                    assertNotNull(instance);
+                }
+            }
+        }
+    }
+
+    // Utility method to provide test values for common types
+    private Object getTestValue(Class<?> type) {
+        if (type.equals(String.class)) return "test";
+        if (type.equals(int.class) || type.equals(Integer.class)) return 123;
+        if (type.equals(boolean.class) || type.equals(Boolean.class)) return true;
+        if (type.equals(Map.class)) {
+            Map<String, Object> testMap = new HashMap<>();
+            testMap.put("key1", "value1");
+            return testMap;
+        }
+        // Add more types as needed
+        return null;
+    }
+}

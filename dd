@@ -1,0 +1,58 @@
+Here’s a polished articulation of your use cases and the feedback functionality for your demo:
+
+---
+
+### **Showcasing Core Functionalities of the DDP Support Feature**
+
+To demonstrate the real-life capabilities of the Smart Assistant’s **DDP Support Feature**, I’ve outlined several scenarios based on common challenges users face. These scenarios highlight how the assistant observes, identifies, and reacts to pipeline issues, ensuring users receive actionable insights and support.  
+
+---
+
+#### **Case 1: Success Case**
+- The Smart Assistant confirms that the pipeline has executed successfully without any issues.  
+- It provides users with detailed logs for verification and includes an option to create a **support ticket** if further assistance is required.  
+- This ensures that even in success scenarios, users have a clear path for additional help if needed.  
+
+---
+
+#### **Case 2: Success with Deployment Issues**
+- In some instances, pipelines may be marked as successful, but deployments fail due to underlying issues that are hard to identify.  
+- The assistant processes the pipeline and deployment logs, identifies the root cause of the problem, and presents the relevant information to the user.  
+- If needed, users can escalate the issue to the **DSO Customer Care Team** directly through the assistant for further investigation and resolution.  
+
+---
+
+#### **Case 3: Failure Scenario with Known Error Code**
+- When the pipeline fails and the assistant detects a known error code from the predefined error catalog, it performs an in-depth analysis to pinpoint the root cause.  
+- For eligible scenarios, it generates a **source code link** (e.g., a Bitbucket link) that directs the user to the exact line of code requiring attention.  
+- This feature streamlines debugging and resolution for developers.  
+
+---
+
+#### **Case 4: Failure Scenario with Known Error Code (Non-Code Specific)**
+- In some cases, a failure is associated with a known error code but does not warrant a source code link generation.  
+- The assistant provides a detailed description and explanation of the issue, helping users understand the problem clearly.  
+- This ensures users are equipped with actionable information, even when a direct fix isn’t applicable.  
+
+---
+
+#### **Case 5: Blackbox Failures**
+- Occasionally, pipelines may fail due to complex or ambiguous issues that neither DDP nor the Smart Assistant can fully analyze.  
+- In such cases, the assistant highlights the issue, provides as much detailed information as possible, and suggests reaching out to the **DSO Customer Care Team** for further support.  
+- This ensures users always have a pathway to escalate unresolved problems.
+
+---
+
+### **Feedback Feature**
+Before concluding any session, the Smart Assistant includes a **feedback mechanism** to gather valuable user insights.  
+- At the end of each interaction, it prompts the user with a feedback question:  
+  - “How would you rate your experience with the Smart Assistant today?”  
+  - Users can provide feedback, which the assistant logs in the database for further analysis and improvements.  
+- Additionally, the assistant logs user sessions in the database for **audit purposes**, helping maintain transparency and track usage patterns.  
+
+---
+
+### **Conclusion**
+The **DDP Support Feature** is designed to address a wide range of pipeline scenarios, ensuring users get the support they need—whether it’s detailed logs, actionable insights, or escalation options. With the added **feedback functionality**, the Smart Assistant continuously improves by learning from user experiences, creating a more efficient and user-friendly tool.  
+
+This structure not only highlights the assistant’s capabilities but also demonstrates its commitment to evolving based on user needs and organizational requirements.

@@ -1,0 +1,108 @@
+<div class="reports-container">
+  <h2>Feedback Analysis</h2>
+
+  <!-- Feedback Report -->
+  <div class="chart-wrapper">
+    <h3>Feedback Report</h3>
+    <ag-charts-angular
+      [options]="feedbackChartOptions"
+      style="width: 100%; max-width: 600px; margin: 0 auto; height: 400px;">
+    </ag-charts-angular>
+  </div>
+
+  <!-- API Usage -->
+  <div class="chart-wrapper">
+    <h3>API Usage</h3>
+    <ag-charts-angular
+      [options]="apiUsageChartOptions"
+      style="width: 100%; max-width: 600px; margin: 0 auto; height: 400px;">
+    </ag-charts-angular>
+  </div>
+</div>
+
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+  padding-bottom: 50px; /* Add padding to avoid overlap with footer */
+}
+
+.chart-wrapper {
+  margin: 20px 0;
+  text-align: center;
+}
+
+h2, h3 {
+  text-align: center;
+}
+
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-sa-reports',
+  templateUrl: './sa-reports.component.html',
+  styleUrls: ['./sa-reports.component.css']
+})
+export class SaReportsComponent implements OnInit {
+  feedbackChartOptions: any;
+  apiUsageChartOptions: any;
+
+  // Example feedback data
+  feedbackData = [
+    { label: 'Very Satisfied', count: 10 },
+    { label: 'Satisfied', count: 5 },
+    { label: 'Neutral', count: 3 },
+    { label: 'Dissatisfied', count: 1 },
+    { label: 'Very Dissatisfied', count: 0 }
+  ];
+
+  // Example API usage data
+  apiUsageData = [
+    { apiName: 'getDocumentation', usageCount: 20 },
+    { apiName: 'getUserInfo', usageCount: 8 },
+    { apiName: 'Environment', usageCount: 4 },
+    { apiName: 'Pipeline', usageCount: 18 },
+    { apiName: 'ResourceConfig', usageCount: 3 },
+    { apiName: 'Operational', usageCount: 5 }
+  ];
+
+  ngOnInit(): void {
+    this.setupFeedbackChart();
+    this.setupApiUsageChart();
+  }
+
+  setupFeedbackChart(): void {
+    this.feedbackChartOptions = {
+      title: { text: 'Feedback Satisfaction', fontSize: 18 },
+      data: this.feedbackData,
+      series: [
+        {
+          type: 'pie',
+          labelKey: 'label',
+          angleKey: 'count',
+        },
+      ],
+    };
+  }
+
+  setupApiUsageChart(): void {
+    this.apiUsageChartOptions = {
+      title: { text: 'API Usage', fontSize: 18 },
+      data: this.apiUsageData,
+      series: [
+        {
+          type: 'bar',
+          xKey: 'apiName',
+          yKey: 'usageCount',
+        },
+      ],
+      axes: [
+        { type: 'category', position: 'bottom', label: { rotation: 0 } },
+        { type: 'number', position: 'left', title: { text: 'Usage Count' } },
+      ],
+    };
+  }
+}

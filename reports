@@ -1,0 +1,139 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-sa-reports',
+  templateUrl: './sa-reports.component.html',
+  styleUrls: ['./sa-reports.component.css']
+})
+export class SaReportsComponent implements OnInit {
+  // Feedback features and their response options
+  features = [
+    {
+      key: 'satisfaction',
+      title: 'Feedback Satisfaction',
+      options: ['Very Satisfied', 'Satisfied', 'Neutral', 'Dissatisfied', 'Very Dissatisfied']
+    },
+    {
+      key: 'easeOfUse',
+      title: 'Ease of Use',
+      options: ['Very Easy', 'Easy', 'Neutral', 'Difficult', 'Very Difficult']
+    },
+    {
+      key: 'issueResolved',
+      title: 'Issue Resolved',
+      options: ['Yes', 'Partially', 'No']
+    },
+    {
+      key: 'recommendationLikelihood',
+      title: 'Recommendation Likelihood',
+      options: ['Very Likely', 'Likely', 'Neutral', 'Unlikely', 'Very Unlikely']
+    }
+  ];
+
+  selectedFeature = this.features[0]; // Default to the first feature
+  chartOptions: any; // Chart configuration
+  feedbackData: any[] = []; // Holds raw feedback data from the API
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.loadFeedbackData();
+  }
+
+  // Load feedback data from the API
+  loadFeedbackData(): void {
+    this.http.get('/v1/admin/smartassistant/getFeedbackData').subscribe((data: any) => {
+      this.feedbackData = data; // Store raw feedback data
+      this.updateChart(this.selectedFeature.key); // Initialize the chart with the default feature
+    });
+  }
+
+  // Process feedback data by field and map it to all response options
+  processFeedbackDataByField(field: string, options: string[]): any[] {
+    const grouped = this.feedbackData.reduce((acc, item) => {
+      const value = item[field];
+      acc[value] = (acc[value] || 0) + 1;
+      return acc;
+    }, {});
+
+    return options.map((option) => ({
+      label: option,
+      count: grouped[option] || 0 // Default to 0 if no data for the option
+    }));
+  }
+
+  // Update the chart dynamically based on the selected feature
+  updateChart(featureKey: string): void {
+    const selectedFeature = this.features.find((f) => f.key === featureKey);
+    if (selectedFeature) {
+      const processedData = this.processFeedbackDataByField(featureKey, selectedFeature.options);
+      this.initializeChart(selectedFeature.title, processedData);
+      this.selectedFeature = selectedFeature; // Update the selected feature
+    }
+  }
+
+  // Initialize the chart configuration
+  initializeChart(title: string, chartData: any[]): void {
+    this.chartOptions = {
+      data: chartData,
+      title: {
+        text: title,
+        fontSize: 18
+      },
+      series: [
+        {
+          type: 'pie',
+          angleKey: 'count',
+          labelKey: 'label',
+          fills: ['#4caf50', '#8bc34a', '#ffc107', '#ff9800', '#f44336'] // Colors for responses
+        }
+      ],
+      legend: {
+        position: 'bottom'
+      }
+    };
+  }
+}
+
+
+
+<div class="reports-container">
+  <h2>Feedback Analysis</h2>
+
+  <!-- Dropdown for selecting the feature -->
+  <div class="dropdown-container">
+    <label for="feature-select">Select Feedback Feature:</label>
+    <select id="feature-select" (change)="updateChart($event.target.value)">
+      <option *ngFor="let feature of features" [value]="feature.key">
+        {{ feature.title }}
+      </option>
+    </select>
+  </div>
+
+  <!-- Chart Container -->
+  <div class="chart-container" *ngIf="chartOptions">
+    <h3>{{ selectedFeature.title }}</h3>
+    <ag-charts-angular
+      [options]="chartOptions"
+      style="width: 100%; height: 400px;"
+    ></ag-charts-angular>
+  </div>
+</div>
+
+
+.reports-container {
+  padding: 20px;
+}
+
+.dropdown-container {
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+

@@ -1,3 +1,26 @@
+<div class="reports-container">
+  <h2>Feedback Analysis</h2>
+  
+  <!-- Feedback Report -->
+  <div class="chart-wrapper">
+    <h3>Feedback Report</h3>
+    <ag-charts-angular
+      [options]="feedbackChartOptions"
+      style="width: 100%; max-width: 600px; margin: 0 auto; height: 400px;">
+    </ag-charts-angular>
+  </div>
+  
+  <!-- API Usage -->
+  <div class="chart-wrapper">
+    <h3>API Usage</h3>
+    <ag-charts-angular
+      [options]="apiUsageChartOptions"
+      style="width: 100%; max-width: 600px; margin: 0 auto; height: 400px;">
+    </ag-charts-angular>
+  </div>
+</div>
+
+
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -63,4 +86,21 @@ export class SaReportsComponent implements OnInit {
       ],
     };
   }
+}
+
+.reports-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.chart-wrapper {
+  margin: 20px 0;
+  text-align: center;
+}
+
+h2, h3 {
+  text-align: center;
 }

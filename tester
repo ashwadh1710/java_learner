@@ -1,0 +1,66 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-sa-reports',
+  templateUrl: './sa-reports.component.html',
+  styleUrls: ['./sa-reports.component.css']
+})
+export class SaReportsComponent implements OnInit {
+  feedbackChartOptions: any;
+  apiUsageChartOptions: any;
+
+  // Example data
+  feedbackData = [
+    { label: 'Very Satisfied', count: 10 },
+    { label: 'Satisfied', count: 5 },
+    { label: 'Neutral', count: 3 },
+    { label: 'Dissatisfied', count: 1 },
+    { label: 'Very Dissatisfied', count: 0 }
+  ];
+
+  apiUsageData = [
+    { apiName: 'getDocumentation', usageCount: 20 },
+    { apiName: 'getUserInfo', usageCount: 8 },
+    { apiName: 'Environment', usageCount: 4 },
+    { apiName: 'Pipeline', usageCount: 18 },
+    { apiName: 'ResourceConfig', usageCount: 3 },
+    { apiName: 'Operational', usageCount: 5 }
+  ];
+
+  ngOnInit(): void {
+    this.setupFeedbackChart();
+    this.setupApiUsageChart();
+  }
+
+  setupFeedbackChart(): void {
+    this.feedbackChartOptions = {
+      title: { text: 'Feedback Satisfaction', fontSize: 18 },
+      data: this.feedbackData,
+      series: [
+        {
+          type: 'pie',
+          labelKey: 'label',
+          angleKey: 'count',
+        },
+      ],
+    };
+  }
+
+  setupApiUsageChart(): void {
+    this.apiUsageChartOptions = {
+      title: { text: 'API Usage', fontSize: 18 },
+      data: this.apiUsageData,
+      series: [
+        {
+          type: 'bar',
+          xKey: 'apiName',
+          yKey: 'usageCount',
+        },
+      ],
+      axes: [
+        { type: 'category', position: 'bottom', label: { rotation: 0 } },
+        { type: 'number', position: 'left', title: { text: 'Usage Count' } },
+      ],
+    };
+  }
+}

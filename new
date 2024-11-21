@@ -1,0 +1,64 @@
+setupApiUsageChart(): void {
+  this.apiUsageChartOptions = {
+    title: { text: 'API Usage', fontSize: 18 },
+    data: this.apiUsageData,
+    series: [
+      {
+        type: 'bar',
+        xKey: 'usageCount', // Switch to horizontal by using usageCount on x-axis
+        yKey: 'apiName',
+        flipXY: true, // This flips the chart to make it horizontal
+      },
+    ],
+    axes: [
+      { type: 'number', position: 'bottom', title: { text: 'Usage Count' } },
+      { type: 'category', position: 'left', label: { rotation: 0 } },
+    ],
+  };
+}
+
+
+setupApiUsageChart(): void {
+  this.apiUsageChartOptions = {
+    title: { text: 'API Usage', fontSize: 18 },
+    data: this.apiUsageData,
+    series: [
+      {
+        type: 'column',
+        xKey: 'apiName',
+        yKey: 'usageCount',
+        fills: ['#4CAF50', '#FFC107', '#2196F3'], // Optional: Add colors
+        strokeWidth: 0,
+      },
+    ],
+    axes: [
+      { type: 'category', position: 'bottom', label: { rotation: 0 } },
+      { type: 'number', position: 'left', title: { text: 'Usage Count' } },
+    ],
+  };
+}
+
+
+setupApiUsageChart(): void {
+  this.apiUsageChartOptions = {
+    title: { text: 'API Usage', fontSize: 18 },
+    data: this.apiUsageData,
+    series: [
+      {
+        type: 'line',
+        xKey: 'apiName',
+        yKey: 'usageCount',
+        marker: { enabled: true, size: 8 }, // Enable markers for each data point
+        stroke: '#FF5722', // Optional: Line color
+        strokeWidth: 2,
+      },
+    ],
+    axes: [
+      { type: 'category', position: 'bottom', label: { rotation: 0 } },
+      { type: 'number', position: 'left', title: { text: 'Usage Count' } },
+    ],
+  };
+}
+
+
+this.apiUsageChartOptions = { ...this.apiUsageChartOptions }; // Trigger chart redraw

@@ -26,6 +26,27 @@ setupApiUsageChart(): void {
 }
 ```
 
+import { ChartOptions, ChartType, ChartDataset } from 'chart.js';
+
+barChartOptions: ChartOptions = {
+  responsive: true,
+  scales: {
+    x: { title: { display: true, text: 'API Names' } },
+    y: { title: { display: true, text: 'Usage Count' } },
+  },
+};
+
+barChartData: ChartDataset[] = [
+  {
+    label: 'API Usage',
+    data: this.apiUsageData.map(api => api.usageCount),
+    backgroundColor: ['#4CAF50', '#FFC107', '#2196F3', '#FF5722'],
+  },
+];
+
+barChartLabels: string[] = this.apiUsageData.map(api => api.apiName);
+
+
 ---
 
 ### Displaying the Charts Side by Side

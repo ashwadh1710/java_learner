@@ -1,0 +1,65 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-my-chart',
+  template: `<canvas baseChart 
+                    [datasets]="chartData" 
+                    [labels]="chartLabels" 
+                    [options]="chartOptions" 
+                    [colors]="chartColors"
+                    [legend]="chartLegend"
+                    [chartType]="chartType">
+             </canvas>`,
+})
+export class MyChartComponent {
+  // Chart data
+  chartData = [
+    {
+      data: [20, 15, 10, 5, 0], // Replace with your actual data
+      label: 'API Usage',
+      backgroundColor: ['#4CAF50', '#FFC107', '#2196F3', '#FF5722', '#9C27B0'], // Colors for bars
+    },
+  ];
+
+  // Chart labels
+  chartLabels = ['getDocumentation', 'getUserInfo', 'Environment', 'Pipeline', 'Operational'];
+
+  // Chart options
+  chartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: 'API Name',
+          },
+        },
+      ],
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: 'Usage Count',
+          },
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+
+  // Chart type
+  chartType = 'bar'; // For bar charts
+
+  // Legend visibility
+  chartLegend = true;
+
+  // Colors for bars (optional)
+  chartColors = [
+    {
+      backgroundColor: ['#4CAF50', '#FFC107', '#2196F3', '#FF5722', '#9C27B0'],
+    },
+  ];
+}

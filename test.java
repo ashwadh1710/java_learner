@@ -46,6 +46,15 @@ barChartData: ChartDataset[] = [
 
 barChartLabels: string[] = this.apiUsageData.map(api => api.apiName);
 
+<div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+  <canvas baseChart 
+    [data]="barChartData"
+    [options]="barChartOptions"
+    [type]="'bar'">
+  </canvas>
+</div>
+
+
 
 ---
 

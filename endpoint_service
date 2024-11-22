@@ -1,0 +1,44 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
+
+@Injectable({
+  providedIn: 'root', // Makes the service available application-wide
+})
+export class EndpointService {
+  getEndpoint(contextRoot: string): string {
+    const locationString = window.location.toString();
+    if (locationString.includes('local')) {
+      return `http://localhost:8082${contextRoot}`;
+    } else if (locationString.includes('edso-dev')) {
+      return `${environment.apiURLDev}${contextRoot}`;
+    } else if (locationString.includes('edso-qaf')) {
+      return `${environment.apiURLQaf}${contextRoot}`;
+    } else if (locationString.includes('edso-qap')) {
+      return `${environment.apiURLQap}${contextRoot}`;
+    } else if (locationString.includes('edso-pse')) {
+      return `${environment.apiURLPse}${contextRoot}`;
+    } else {
+      return `${environment.apiURLProd}${contextRoot}`;
+    }
+  }
+}
+
+
+import { Component, OnInit } from '@angular/core';
+import { EndpointService } from '../services/endpoint.service';
+
+@Component({
+  selector: 'app-your-component',
+  templateUrl: './your-component.component.html',
+  styleUrls: ['./your-component.component.css'],
+})
+export class YourComponent implements OnInit {
+  endpoint: string = '';
+
+  constructor(private endpointService: EndpointService) {}
+
+  ngOnInit(): void {
+    this.endpoint = this.endpointService.getEndpoint('/your-context-root');
+    console.log('Resolved Endpoint:', this.endpoint);
+  }
+}

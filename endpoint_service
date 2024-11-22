@@ -42,3 +42,37 @@ export class YourComponent implements OnInit {
     console.log('Resolved Endpoint:', this.endpoint);
   }
 }
+
+
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EndpointService {
+  // Define the environment map directly within the service
+  private environmentMap: { [key: string]: string } = {
+    local: 'http://localhost:8082',
+    'edso-dev': 'https://dev.api.example.com',
+    'edso-qaf': 'https://qaf.api.example.com',
+    'edso-qap': 'https://qap.api.example.com',
+    'edso-pse': 'https://pse.api.example.com',
+    'default': 'https://prod.api.example.com',
+  };
+
+  // Method to get the endpoint
+  getEndpoint(contextRoot: string): string {
+    const locationString = window.location.toString();
+
+    // Find the matching environment key
+    for (const [key, baseUrl] of Object.entries(this.environmentMap)) {
+      if (locationString.includes(key)) {
+        return `${baseUrl}${contextRoot}`;
+      }
+    }
+
+    // Default to production if no match found
+    return `${this.environmentMap['default']}${contextRoot}`;
+  }
+}
+

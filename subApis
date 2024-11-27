@@ -61,3 +61,55 @@
 
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-admin-management',
+  templateUrl: './admin-management.component.html',
+  styleUrls: ['./admin-management.component.scss']
+})
+export class AdminManagementComponent implements OnInit {
+  apiForm!: FormGroup;
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.apiForm = this.fb.group({
+      serviceName: ['', Validators.required],
+      appName: ['', Validators.required],
+      parameters: this.fb.group({
+        parameters: ['']
+      }),
+      subApis: this.fb.array([])
+    });
+  }
+
+  // Getter for subApis FormArray
+  get subApis(): FormArray {
+    return this.apiForm.get('subApis') as FormArray;
+  }
+
+  // Add a new subApi group
+  addSubApi(): void {
+    const subApiGroup = this.fb.group({
+      serviceName: [''],
+      appName: ['']
+    });
+    this.subApis.push(subApiGroup);
+  }
+
+  // Remove a subApi group
+  removeSubApi(index: number): void {
+    this.subApis.removeAt(index);
+  }
+
+  // Submit form
+  onSubmit(): void {
+    if (this.apiForm.valid) {
+      console.log(this.apiForm.value);
+    }
+  }
+}
+

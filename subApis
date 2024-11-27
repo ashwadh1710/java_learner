@@ -1,0 +1,63 @@
+<form [formGroup]="apiForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="serviceName">Service Name</label>
+    <input
+      id="serviceName"
+      formControlName="serviceName"
+      type="text"
+      class="form-control"
+    />
+  </div>
+  
+  <div class="form-group">
+    <label for="appName">App Name</label>
+    <input
+      id="appName"
+      formControlName="appName"
+      type="text"
+      class="form-control"
+    />
+  </div>
+
+  <div formGroupName="parameters">
+    <label for="parameters">Parameters</label>
+    <input
+      id="parameters"
+      formControlName="parameters"
+      type="text"
+      class="form-control"
+      placeholder="Comma-separated values"
+    />
+  </div>
+
+  <div formGroupName="subApis">
+    <h5>Sub APIs</h5>
+    <div
+      *ngFor="let subApi of subApis.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <div class="form-group">
+        <label for="subApiServiceName">Sub API Service Name</label>
+        <input
+          id="subApiServiceName"
+          formControlName="serviceName"
+          type="text"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group">
+        <label for="subApiAppName">Sub API App Name</label>
+        <input
+          id="subApiAppName"
+          formControlName="appName"
+          type="text"
+          class="form-control"
+        />
+      </div>
+      <button (click)="removeSubApi(i)" type="button">Remove</button>
+    </div>
+    <button (click)="addSubApi()" type="button">Add Sub API</button>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
